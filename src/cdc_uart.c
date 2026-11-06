@@ -108,7 +108,7 @@ bool cdc_task(void)
         rx_buf[rx_len++] = uart_getc(PROBE_UART_INTERFACE);
     }
 
-    if (tud_cdc_connected()) {
+    if (tud_ready()) {
         was_connected = 1;
         int written = 0;
         /* Implicit overflow if we don't write all the bytes to the host.
@@ -248,7 +248,7 @@ void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* line_coding)
   uint data_bits, stop_bits;
 
   /* Modifying state, so park the thread before changing it. */
-  if (tud_cdc_connected())
+  if (tud_ready())
     vTaskSuspend(uart_taskhandle);
 
   cdc_uart_set_baudrate(line_coding->bit_rate);
@@ -299,7 +299,7 @@ void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* line_coding)
   uart_set_format(PROBE_UART_INTERFACE, data_bits, stop_bits, parity);
   /* Windows likes to arbitrarily set/get line coding after dtr/rts changes, so
    * don't resume if we shouldn't */
-  if(tud_cdc_connected())
+  if(tud_ready())
     vTaskResume(uart_taskhandle);
 }
 

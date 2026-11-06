@@ -6,6 +6,7 @@ It's port of debugprobe for cheap ~2$ board with extra support of on-board rgb l
 - Fix problem with not working firmware after upload and reset. PICO_XOSC_STARTUP_DELAY_MULTIPLIER is solution.
 - Change ports for easy access
 - Add built-in led support
+- Remove DTR gating from the CDC UART bridge: `tud_cdc_connected()` replaced with `tud_ready()` in `src/cdc_uart.c`, so the serial port works with any terminal regardless of DTR/RTS settings (see [raspberrypi/debugprobe issue #32](https://github.com/raspberrypi/debugprobe/issues/32))
 
 ### Pinout:
 ```
